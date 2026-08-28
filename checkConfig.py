@@ -43,7 +43,9 @@ def parseClientTypeChart(path: Path, clientType: int) -> dict:
     return req
 
 
-def configCheck():
+def configCheck(clientType: int, account_id: str, parseFile: Path = Path("./export.csv")) -> None:
+    df: pd.DataFrame = pd.read_csv(parseFile, dtype="string")
+    row = df[df.iloc[:, 0] == account_id].iloc[0]
     return None
 
 
@@ -51,7 +53,7 @@ def main(args: argparse.Namespace) -> int | None:
     parseFile: Path = args.parseFile
     clientType: int = args.clientType
     account_id: str = args.a_id
-    configCheck()
+    configCheck(clientType, account_id, parseFile)
     return 0
 
 
