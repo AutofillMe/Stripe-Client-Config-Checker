@@ -58,14 +58,20 @@ def configCheck(
     rulesFile: Path,
 ) -> None:
     if not parseFile.is_file():
-        print("Failed to open export.csv, please check that the file exists at the given path or the default path of ./export.csv")
+        print(
+            "Failed to open export.csv, please check that the file exists at the given path or the default path of ./export.csv"
+        )
         print(f"Path to export.csv: {parseFile}")
-    
+
     if not rulesFile.is_file():
-        print("Failed to open rules.csv, please check that the file exists at the given path or the default path of ./rules.csv")
+        print(
+            "Failed to open rules.csv, please check that the file exists at the given path or the default path of ./rules.csv"
+        )
         print(f"Path to rules.csv: {rulesFile}")
 
     df: pd.DataFrame = pd.read_csv(parseFile, dtype="string")
+    # When reading in the export file, column 0 should always
+    # be account_id after being passed through the standardizer
     row: pd.DataFrame = df[df.iloc[:, 0] == account_id].iloc[0]
     return None
 
