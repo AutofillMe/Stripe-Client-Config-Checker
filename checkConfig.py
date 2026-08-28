@@ -28,6 +28,14 @@ parser.add_argument(
     help="path to csv file to parse data from",
 )
 
+parser.add_argument(
+    "-c",
+    "--chart",
+    dest="clientTypeChart",
+    type=Path,
+    help="path to csv file containing the chart of rules for what configs need to be set per client type",
+)
+
 args = parser.parse_args()
 
 
@@ -43,17 +51,31 @@ def parseClientTypeChart(path: Path, clientType: int) -> dict:
     return req
 
 
-def configCheck(clientType: int, account_id: str, parseFile: Path = Path("./export.csv")) -> None:
+def configCheck(
+    account_id: str,
+    clientType: int,
+    parseFile: Path,
+    rulesFile: Path,
+) -> None:
+    if not parseFile.is_file():
+        print("Failed to open export.csv, please check that the file exists at the given path or the default path of ./export.csv")
+        print(f"Path to export.csv: {parseFile}")
+    
+    if not rulesFile.is_file():
+        print("Failed to open rules.csv, please check that the file exists at the given path or the default path of ./rules.csv")
+        print(f"Path to rules.csv: {rulesFile}")
+
     df: pd.DataFrame = pd.read_csv(parseFile, dtype="string")
-    row = df[df.iloc[:, 0] == account_id].iloc[0]
+    row: pd.DataFrame = df[df.iloc[:, 0] == account_id].iloc[0]
     return None
 
 
 def main(args: argparse.Namespace) -> int | None:
-    parseFile: Path = args.parseFile
-    clientType: int = args.clientType
     account_id: str = args.a_id
-    configCheck(clientType, account_id, parseFile)
+    clientType: int = args.clientType
+    parseFile: Path = args.parseFile or Path("./export.csv")
+    clientTypeChart: Path = args.clientTypeChart or Path("./clientTypeChart.csv")
+    configCheck(account_id, clientType, parseFile, clientTypeChart)
     return 0
 
 
