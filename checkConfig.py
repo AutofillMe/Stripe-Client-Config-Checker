@@ -62,12 +62,14 @@ def configCheck(
             "Failed to open export.csv, please check that the file exists at the given path or the default path of ./export.csv"
         )
         print(f"Path to export.csv: {parseFile}")
+        raise SystemExit(1)
 
     if not rulesFile.is_file():
         print(
             "Failed to open rules.csv, please check that the file exists at the given path or the default path of ./rules.csv"
         )
         print(f"Path to rules.csv: {rulesFile}")
+        raise SystemExit(1)
 
     df: pd.DataFrame = pd.read_csv(parseFile, dtype="string")
     # When reading in the export file, column 0 should always
