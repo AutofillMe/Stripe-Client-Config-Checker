@@ -39,14 +39,20 @@ parser.add_argument(
 args = parser.parse_args()
 
 
-def parseClientTypeChart(clientTypeChart: Path, clientType: int) -> dict:
+def parseClientTypeChart(clientTypeChart: Path, clientType: int) -> dict | None:
     req: dict = {}
 
+    # TODO this shit ugly, need to clean
     with open(clientTypeChart, "r") as f:
         for line in f:
             if line[2] == str(clientType):
-                pass
-    return req
+                clientDescriptor: str = line.strip().split(",")[0]
+                for line in f:
+                    print(line)
+                    if line.strip() == "$END":
+                        return req
+
+    return
 
 
 def configCheck(
@@ -81,7 +87,8 @@ def main(args: argparse.Namespace) -> int | None:
     clientType: int = args.clientType
     parseFile: Path = args.parseFile or Path("./export.csv")
     clientTypeChart: Path = args.clientTypeChart or Path("./clientTypeChart.csv")
-    configCheck(account_id, clientType, parseFile, clientTypeChart)
+    # configCheck(account_id, clientType, parseFile, clientTypeChart)
+    parseClientTypeChart(clientTypeChart, clientType)
     return 0
 
 
