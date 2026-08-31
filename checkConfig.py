@@ -39,15 +39,13 @@ parser.add_argument(
 args = parser.parse_args()
 
 
-def parseClientTypeChart(path: Path, clientType: int) -> dict:
+def parseClientTypeChart(clientTypeChart: Path, clientType: int) -> dict:
     req: dict = {}
 
-    if clientType == 1:
-        print()
-    if clientType == 2:
-        print()
-    if clientType == 3 or clientType == 4:
-        print()
+    with open(clientTypeChart, "r") as f:
+        for line in f:
+            if line[2] == str(clientType):
+                pass
     return req
 
 
@@ -55,7 +53,7 @@ def configCheck(
     account_id: str,
     clientType: int,
     parseFile: Path,
-    rulesFile: Path,
+    clientTypeChart: Path,
 ) -> None:
     if not parseFile.is_file():
         print(
@@ -64,11 +62,11 @@ def configCheck(
         print(f"Path to export.csv: {parseFile}")
         raise SystemExit(1)
 
-    if not rulesFile.is_file():
+    if not clientTypeChart.is_file():
         print(
             "Failed to open rules.csv, please check that the file exists at the given path or the default path of ./rules.csv"
         )
-        print(f"Path to rules.csv: {rulesFile}")
+        print(f"Path to rules.csv: {clientTypeChart}")
         raise SystemExit(1)
 
     df: pd.DataFrame = pd.read_csv(parseFile, dtype="string")
