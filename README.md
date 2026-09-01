@@ -1,14 +1,13 @@
 # Stripe-Client-Config-Checker
 Checks client's Stripe configs to ensure all settings match required configs for Stripe migration
 
-## Usage
+## How to Run
+Usage:
 ```
 python3 checkConfig.py [-h] [-a A_ID] [-t CLIENTTYPE] [-f PARSEFILE] [-c CLIENTTYPECHART]
-
 ```
-
+Options:
 ```
-options:
   -h, --help                        show this help message and exit
   -a, --acct A_ID                   <str> account_id of the client
   -t, --client-type CLIENTTYPE      <int> what type of client they are (1, 2, 3, 4)
