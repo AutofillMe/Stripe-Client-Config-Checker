@@ -47,10 +47,8 @@ def createDictKeys(req: dict, keyLine: list[str]) -> dict[str, list]:
 
 def appendDictItems(req: dict, line: str, keys: list[str]) -> dict[str, list[str]]:
     itemsToAppend: list[str] = line.strip().split(",", maxsplit=3)
-    count: int = 0
-    for key in keys:
-        req[key].append(itemsToAppend[count])
-        count += 1
+    for index, key in enumerate(keys):
+        req[key].append(itemsToAppend[index])
     return req
 
 
@@ -73,7 +71,26 @@ def parseClientTypeChart(
     return req
 
 
-def passFail(row: pd.DataFrame, req: dict[str, list[str]]) -> None:
+def checkPassFail(row: pd.DataFrame, req: dict[str, list[str]]) -> None:
+    fixes: list[list[str]] = []
+    incorrectSettings: list[list[str]] = []
+
+    for index, col in enumerate(req["Column Name"]):
+        if row[col].lower() != req["Expected Response"][index]:
+            fixes.append([req["Stripe Setting"][index], req["Guide for client"][index]])
+            incorrectSettings.append([req["Expected Response"][index], str(row[col])])
+
+    if not fixes:
+        print("Stripe configuration is set correctly! ✅")
+    else:
+        print("Stripe configuration is not correct! ❌")
+        for i in incorrectSettings:
+            print(f"Expected Response: {i[0]}\tActual Response: {i[1]}")
+        print("Fixes to apply:")
+        for i in fixes:
+            print(
+                f"\t{i[0]}:\n\t\t{i[1].replace("\\n", "\n\t\t").replace('""', '"')}\n\n"
+            )
     return
 
 
@@ -110,7 +127,7 @@ def configCheck(
     # be account_id after being passed through the standardizer
     row: pd.DataFrame = df[df.iloc[:, 0] == account_id].iloc[0]
     req: dict[str, list[str]] = parseClientTypeChart(clientTypeChart, clientType)
-    passFail(row, req)
+    checkPassFail(row, req)
     return None
 
 
