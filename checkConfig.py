@@ -75,15 +75,19 @@ def checkPassFail(row: pd.DataFrame, req: dict[str, list[str]]) -> None:
     fixes: list[list[str]] = []
     incorrectSettings: list[list[str]] = []
 
+    # compare config vs expected values
     for index, col in enumerate(req["Column Name"]):
         if row[col].lower() != req["Expected Response"][index]:
             fixes.append([req["Stripe Setting"][index], req["Guide for client"][index]])
             incorrectSettings.append([req["Expected Response"][index], str(row[col])])
 
+    # tell the user if fixes need to be made
     if not fixes:
         print("Stripe configuration is set correctly! ✅")
     else:
-        print("Stripe configuration is not correct! ❌")
+        print(
+            f"Stripe configuration is not correct! ❌\nThere are {len(fixes)} fixes that need to addressed.\n"
+        )
         for i in incorrectSettings:
             print(f"Expected Response: {i[0]}\tActual Response: {i[1]}")
         print("Fixes to apply:")
