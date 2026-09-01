@@ -39,20 +39,33 @@ parser.add_argument(
 args = parser.parse_args()
 
 
-def parseClientTypeChart(clientTypeChart: Path, clientType: int) -> dict | None:
+def createDictKeys(req: dict, keyLine: list[str]) -> dict[str, list]:
+    for key in keyLine:
+        req[key] = []
+    return req
+
+
+def appendDictItems(req: dict, line: str) -> dict[str, list[str]]:
+
+    return req
+
+
+def parseClientTypeChart(
+    clientTypeChart: Path, clientType: int
+) -> dict[str, list[str]]:
     req: dict = {}
 
     # TODO this shit ugly, need to clean
     with open(clientTypeChart, "r") as f:
         for line in f:
             if line[2] == str(clientType):
-                clientDescriptor: str = line.strip().split(",")[0]
+                req = createDictKeys(req, f.readline().strip().split(","))
                 for line in f:
-                    print(line)
                     if line.strip() == "$END":
                         return req
+                    req = appendDictItems(req, line)
 
-    return
+    return req
 
 
 def configCheck(
