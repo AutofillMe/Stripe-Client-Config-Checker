@@ -14,7 +14,7 @@ Options:
   -f, --file PARSEFILE              <path> OPTIONAL: path to csv file to parse data from
   -c, --chart CLIENTTYPECHART       <path> OPTIONAL: path to csv file containing the chart of rules for what configs need to be set per client type
 ```
-The script expects the following default file tree unless otherwise specified by passing the `-f` or `-c` options:
+The script expects the following default file tree (unless otherwise specified by passing the `-f` or `-c` options):
 ```
 project/
     ├── clientTypeChart.csv
