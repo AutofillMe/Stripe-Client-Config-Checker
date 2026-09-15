@@ -95,6 +95,7 @@ def parseClientTypeChart(
     with open(clientTypeChart, "r") as f:
         for line in f:
             if line[2] == str(clientType):
+                print(f"Client Type: {line[6:]}")
                 keys = f.readline().strip().split(",")
                 req = createDictKeys(req, keys)
                 for line in f:
@@ -138,12 +139,12 @@ def checkPassFail(row: pd.DataFrame, req: dict[str, list[str]]) -> None:
         # print expected vs actual configs
         for i in incorrectSettings:
             print(f"Expected Response: {i[0]}\tActual Response: {i[1]}")
-        
+
         # print fixes to copy paste to client
         print("Fixes to apply:")
         for i in fixes:
             print(
-                f"\t{i[0]}:\n\t\t{i[1].replace("\\n", "\n\t\t").replace('""', '"')}\n\n"
+                f"\t{i[0]}:\n\t\t{i[1].replace('\\n', '\n\t\t').replace('""', '"')}\n\n"
             )
     return
 
