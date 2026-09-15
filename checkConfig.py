@@ -145,7 +145,7 @@ def checkPassFail(row: pd.DataFrame, req: dict[str, list[str]]) -> None:
         # print expected vs actual configs
         for i in incorrectSettings:
             print(
-                f"Incorrect Setting: {i[0]}\n\tExpected Response: {i[1]}\t\tActual Response: {i[2]}"
+                f"Incorrect Setting: {i[0]}\n\t✅ Expected Response: {i[1]}\n\t❌ Actual Response: {i[2]}"
             )
 
         # print fixes to copy paste to client
